@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
+  "homepage" : "https://altbdoor.github.io/react-reddit-rss/",
   "dependencies": {
     "bootstrap": "4.1.x",
     "react": "^16.3.2",
