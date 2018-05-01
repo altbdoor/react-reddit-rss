@@ -10,6 +10,8 @@ build_script:
 - cmd: >-
     set PATH=C:\Program Files\Git\usr\bin;%PATH%
 
+    Install-Product node lts
+
     bash appveyor_build.sh
 test: off
 deploy: off
