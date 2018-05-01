@@ -1,0 +1,79 @@
+body {
+    overflow-y: scroll;
+    /*background-color: #1b1b1d;*/
+    /*color: #fff;*/
+}
+
+.navbar.navbar-dark {
+    /*background-color: #0c0c0d;*/
+}
+
+#post-list > .list-group-item {
+    padding: 5px;
+    /*background-color: transparent;*/
+}
+
+.post-item-img {
+    cursor: pointer;
+    flex-basis: 120px;
+    height: 68px;
+    flex-shrink: 0;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #000;
+    margin-right: 5px;
+}
+
+.post-item-title {
+    max-height: 3em;
+    overflow: hidden;
+}
+
+.gfycat-embed {
+    padding-bottom: 51%;
+}
+
+.gfycat-embed > iframe {
+    top: 0;
+    left: 0;
+}
+
+.gfycat-close {
+    z-index: 1100;
+    top: 0;
+    right: 0;
+    border-radius: 0 0 0 4px;
+    font-family: monospace;
+    line-height: 1;
+    border-top: 0;
+    border-right: 0;
+    opacity: 0.4;
+}
+.gfycat-close:hover {
+    opacity: 1;
+}
+
+.modal-backdrop.show {opacity: 0.8;}
+
+.badge-reddit {
+    color: #fff;
+    background-color: #ff4500;
+}
+
+.badge-reddit[href]:hover, .badge-reddit[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #cc3700;
+}
+
+.badge-gfycat {
+    color: #fff;
+    background-color: #2475ff;
+}
+
+.badge-gfycat[href]:hover, .badge-gfycat[href]:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #0059f0;
+}
