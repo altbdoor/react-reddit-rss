@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 
 class PostItemBasic extends Component {
@@ -12,26 +12,25 @@ class PostItemBasic extends Component {
 }
 
 class PostItem extends Component {
-    constructor(props) {
-        super(props);
-        this.postItemClick = this.postItemClick.bind(this);
-    }
+    // constructor(props) {
+    //     super(props)
+    // }
 
     render() {
-        const data = this.props.data;
+        const data = this.props.data
         const gfyId = data.url.replace(/https?:\/\/gfycat\.com\//, '')
-            .replace('gifs/detail/', '');
+            .replace('gifs/detail/', '')
 
         const bgImg = {
             backgroundImage: `url('${data.thumbnail}')`,
         }
-        const redditLink = `https://www.reddit.com${data.permalink}`;
+        const redditLink = `https://www.reddit.com${data.permalink}`
         const gfycatLink = `https://gfycat.com/${gfyId}`
 
         return (
             <div className="list-group-item d-flex flex-row">
                 <div className="d-flex post-item-img" style={bgImg}
-                    onClick={(e) => this.postItemClick(e, gfyId)}></div>
+                    onClick={() => this.props.showPlayerFrame(gfyId)}></div>
 
                 <div className="d-flex flex-column">
                     <div className="post-item-title d-flex small font-weight-bold mb-1" title={data.title}>
@@ -44,10 +43,6 @@ class PostItem extends Component {
                 </div>
             </div>
         )
-    }
-
-    postItemClick(e, gfyId) {
-        this.props.showPlayerFrame(gfyId);
     }
 }
 

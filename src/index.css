@@ -4,6 +4,10 @@ body {
     /*color: #fff;*/
 }
 
+textarea {
+    font-family: monospace;
+}
+
 .navbar.navbar-dark {
     /*background-color: #0c0c0d;*/
 }

@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { PostItem, PostItemBasic } from './PostItem'
 
 
 class PostList extends Component {
     render() {
-        const isLoading = this.props.isLoading;
-        const isError = this.props.isError;
-        const data = this.props.data;
+        const isLoading = this.props.isLoading
+        const isError = this.props.isError
+        const data = this.props.data
 
-        let postListContent = null;
+        let postListContent = null
 
         if (isLoading) {
             postListContent = (
@@ -23,24 +23,24 @@ class PostList extends Component {
             }
             else {
                 postListContent = data.filter((item) => {
-                    let isProviderGfycat = false;
+                    let isProviderGfycat = false
 
                     try {
-                        isProviderGfycat = (item.data.secure_media.oembed.provider_name === 'gfycat');
+                        isProviderGfycat = (item.data.secure_media.oembed.provider_name === 'gfycat')
                     }
                     catch (e) {}
 
-                    return isProviderGfycat;
+                    return isProviderGfycat
 
                 }).map((item) => {
-                    const data = item.data;
-                    const itemKey = `${data.subreddit_id}_${data.id}`;
+                    const data = item.data
+                    const itemKey = `${data.subreddit_id}_${data.id}`
 
                     return (
                         <PostItem key={itemKey} data={data}
                             showPlayerFrame={this.props.showPlayerFrame} />
                     )
-                });
+                })
             }
         }
 
@@ -52,4 +52,4 @@ class PostList extends Component {
     }
 }
 
-export default PostList;
+export default PostList
