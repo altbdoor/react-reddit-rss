@@ -8,7 +8,7 @@ environment:
     secure: gttW1WWlrpNJiUevp7Ldp7amYfqpqu7udsozHnSN0hr5OAkIlEz2jAThj0bYJZQ4
 build_script:
 - cmd: >-
-    set PATH=C:\Program Files\Git\usr\bin;
+    set PATH=C:\Program Files\Git\usr\bin;%PATH%
 
     bash appveyor_build.sh
 test: off
