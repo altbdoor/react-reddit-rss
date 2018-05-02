@@ -28,7 +28,7 @@ class PostList extends Component {
                     try {
                         isProviderGfycat = (item.data.secure_media.oembed.provider_name === 'gfycat')
                     }
-                    catch (e) {}
+                    catch(e) {}
 
                     return isProviderGfycat
 

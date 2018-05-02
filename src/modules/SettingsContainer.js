@@ -12,30 +12,28 @@ class SettingsContainer extends Component {
         }
 
         this.handleInputChange = this.handleInputChange.bind(this)
+        this.saveSettingsToParent = this.saveSettingsToParent.bind(this)
+        this.toggleAdvancedFields = this.toggleAdvancedFields.bind(this)
     }
 
     componentDidMount() {
-        let defaultSettings = {
-            fnUrl: `function () {
-    return 'https://cors-anywhere.herokuapp.com/{subredditUrl}'
-}`,
-            fnData: `function (ajaxData) {
-    return ajaxData.data.children
-}`,
-            subredditUrl: 'https://www.reddit.com/r/RocketLeague/hot/.json',
-        }
-        let userSettings = this.loadSettings()
+        this.updatePropSettingsToState(this.props.currentSettings)
+    }
 
-        for (let key in userSettings) {
-            defaultSettings[key] = userSettings[key]
-        }
+    componentDidUpdate(prevProps, prevState) {
+        const currentSettings = this.props.currentSettings
+        const previousSettings = prevProps.currentSettings
 
-        this.setState(defaultSettings)
+        const isSettingsSame = this.isObjectEqual(currentSettings, previousSettings)
+
+        if (!isSettingsSame) {
+            this.updatePropSettingsToState(currentSettings)
+        }
     }
 
     render() {
         return (
-            <form onSubmit={(e) => this.saveSettings(e)}>
+            <form onSubmit={(e) => this.saveSettingsToParent(e)}>
                 <SettingsField fieldType="input" name="subredditUrl"
                     label="Subreddit RSS URL"
                     value={this.state.subredditUrl}
@@ -43,7 +41,7 @@ class SettingsContainer extends Component {
                     onChange={this.handleInputChange} />
 
                 <div className="text-right">
-                    <a href="#" className="small" onClick={() => this.setState({showAdvanced: !this.state.showAdvanced})}>
+                    <a href="" className="small" onClick={(e) => this.toggleAdvancedFields(e)}>
                         Show advanced settings
                     </a>
                 </div>
@@ -88,6 +86,13 @@ class SettingsContainer extends Component {
 
     // =====
 
+    toggleAdvancedFields(e) {
+        e.preventDefault()
+        this.setState({
+            showAdvanced: !this.state.showAdvanced,
+        })
+    }
+
     handleInputChange(e) {
         const target = e.target
 
@@ -96,41 +101,42 @@ class SettingsContainer extends Component {
         })
     }
 
-    getSettingsKey() {
-        return 'v2-settings'
+    updatePropSettingsToState(propSettings) {
+        for (var key in propSettings) {
+            this.setState({
+                [key]: propSettings[key]
+            })
+        }
     }
 
-    saveSettings(e) {
+    saveSettingsToParent(e) {
         e.preventDefault()
-
-        const savedKeys = [
-            'fnUrl',
-            'fnData',
-            'subredditUrl',
-        ]
-
-        let newSettings = {}
-
-        savedKeys.forEach((k) => {
-            newSettings[k] = this.state[k]
-        })
-
-        newSettings = JSON.stringify(newSettings)
-        localStorage.setItem(this.getSettingsKey(), newSettings)
+        this.props.setSettings(this.state)
     }
 
-    loadSettings() {
-        let settings = localStorage.getItem(this.getSettingsKey())
-        try {
-            settings = JSON.parse(settings)
+    isObjectEqual(obj1, obj2) {
+        let isEqual = true
+
+        if (Object.keys(obj1).length === Object.keys(obj2).length) {
+            for (var key in obj1) {
+                if (key in obj2) {
+                    isEqual = (obj1[key] === obj2[key])
+                }
+                else {
+                    isEqual = false
+                }
+
+                if (!isEqual) {
+                    break
+                }
+            }
         }
-        catch (e) {
-            settings = null
+        else {
+            isEqual = false
         }
 
-        return settings
+        return isEqual
     }
-
 }
 
 class SettingsField extends Component {
