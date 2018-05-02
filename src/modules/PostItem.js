@@ -37,8 +37,8 @@ class PostItem extends Component {
                         {data.title}
                     </div>
                     <div className="d-flex mt-auto">
-                        <a target="_blank" class="badge badge-reddit mr-1" href={redditLink}>Reddit</a>
-                        <a target="_blank" class="badge badge-gfycat" href={gfycatLink}>Gfycat</a>
+                        <a target="_blank" className="badge badge-reddit mr-1" href={redditLink}>Reddit</a>
+                        <a target="_blank" className="badge badge-gfycat" href={gfycatLink}>Gfycat</a>
                     </div>
                 </div>
             </div>

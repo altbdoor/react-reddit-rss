@@ -1,4 +1,10 @@
 import React, { Component } from 'react';
+import {
+    HashRouter,
+    Route,
+    Link
+} from 'react-router-dom'
+
 import Navbar from './modules/Navbar';
 import PostContainer from './modules/PostContainer';
 import SettingsContainer from './modules/SettingsContainer';
@@ -23,16 +29,31 @@ class App extends Component {
     }
 
     render() {
+        const injectedSettingsContainer = (props) => (
+            <SettingsContainer currentSettings={this.state.settings}
+                setSettings={this.setSettings} />
+        )
+
+        const injectedPostContainer = (props) => (
+            <PostContainer currentSettings={this.state.settings} />
+        )
+
         return (
-            <div className="container py-3">
-                <div className="row justify-content-center">
-                    <div className="col-md-9 col-lg-6">
-                        <Navbar />
-                        <SettingsContainer currentSettings={this.state.settings}
-                            setSettings={this.setSettings} />
+            <HashRouter>
+                <div className="container py-3">
+                    <div className="row justify-content-center">
+                        <div className="col-md-9 col-lg-6">
+                            <ul>
+                                <li><Link to="/">Home</Link></li>
+                                <li><Link to="/settings">settings</Link></li>
+                            </ul>
+
+                            <Route exact path="/" render={injectedPostContainer} />
+                            <Route exact path="/settings" render={injectedSettingsContainer} />
+                        </div>
                     </div>
                 </div>
-            </div>
+            </HashRouter>
         )
     }
 

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import React, { Component } from 'react'
 import PostList from './PostList'
 import PlayerFrame from './PlayerFrame'
@@ -14,35 +16,48 @@ class PostContainer extends Component {
             gfyId: null,
         }
 
+        this.source = null
+
         this.showPlayerFrame = this.showPlayerFrame.bind(this)
         this.hidePlayerFrame = this.hidePlayerFrame.bind(this)
     }
 
     componentDidMount() {
-        const fetchUrl = this.getCorsUrl()
-        fetch(fetchUrl)
-            .then((res) => res.json())
-            .then(
-                (result) => {
-                    const data = this.getCorsData(result)
-                    let postListData = this.state.postListData
+        let self = this
+        const fetchUrl = self.getCorsUrl()
 
-                    data.forEach((item) => {
-                        postListData.push(item)
-                    })
+        self.source = axios.CancelToken.source()
 
-                    this.setState({
-                        isLoading: false,
-                        postListData: postListData,
-                    })
-                },
-                (error) => {
-                    this.setState({
-                        isLoading: false,
-                        isError: true,
-                    })
-                },
-            )
+        axios.get(fetchUrl, {
+            cancelToken: self.source.token,
+        }).then(function (response) {
+            const data = self.getCorsData(response.data)
+            let postListData = self.state.postListData
+
+            data.forEach((item) => {
+                postListData.push(item)
+            })
+
+            if (self.source) {
+                self.setState({
+                    isLoading: false,
+                    postListData: postListData,
+                })
+            }
+
+        }).catch(function (error) {
+            if (self.source && error !== 'MANUALCANCEL') {
+                self.setState({
+                    isLoading: false,
+                    isError: true,
+                })
+            }
+        })
+    }
+
+    componentWillUnmount() {
+        this.source.cancel('MANUALCANCEL')
+        this.source = null
     }
 
     render() {
