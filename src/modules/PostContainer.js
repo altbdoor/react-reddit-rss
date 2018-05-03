@@ -3,9 +3,12 @@ import axios from 'axios';
 import React, { Component } from 'react'
 import PostList from './PostList'
 import PlayerFrame from './PlayerFrame'
+import Util from './Util'
 
 
 class PostContainer extends Component {
+    source = null
+
     constructor(props) {
         super(props)
         this.state = {
@@ -16,43 +19,12 @@ class PostContainer extends Component {
             gfyId: null,
         }
 
-        this.source = null
-
         this.showPlayerFrame = this.showPlayerFrame.bind(this)
         this.hidePlayerFrame = this.hidePlayerFrame.bind(this)
     }
 
     componentDidMount() {
-        let self = this
-        const fetchUrl = self.getCorsUrl()
-
-        self.source = axios.CancelToken.source()
-
-        axios.get(fetchUrl, {
-            cancelToken: self.source.token,
-        }).then(function (response) {
-            const data = self.getCorsData(response.data)
-            let postListData = self.state.postListData
-
-            data.forEach((item) => {
-                postListData.push(item)
-            })
-
-            if (self.source) {
-                self.setState({
-                    isLoading: false,
-                    postListData: postListData,
-                })
-            }
-
-        }).catch(function (error) {
-            if (self.source && error !== 'MANUALCANCEL') {
-                self.setState({
-                    isLoading: false,
-                    isError: true,
-                })
-            }
-        })
+        this.loadPostList()
     }
 
     componentWillUnmount() {
@@ -91,15 +63,52 @@ class PostContainer extends Component {
         })
     }
 
-    // =====
+    loadPostList() {
+        let self = this
+        const currentSettings = Util.loadSettings()
 
-    getCorsUrl() {
-        return 'https://cors-anywhere.herokuapp.com/https://www.reddit.com/r/RocketLeague/hot/.json'
+        let fetchUrl = eval(currentSettings.fnUrl)()
+        fetchUrl = fetchUrl.replace('{subredditUrl}', currentSettings.subredditUrl)
+
+        self.source = axios.CancelToken.source()
+
+        axios.get(fetchUrl, {
+            cancelToken: self.source.token,
+        }).then(function (response) {
+            const data = eval(currentSettings.fnData)(response.data)
+            let postListData = self.state.postListData
+
+            data.filter((item) => {
+                let isProviderGfycat = false
+
+                try {
+                    isProviderGfycat = (item.data.secure_media.oembed.provider_name === 'gfycat')
+                }
+                catch(e) {}
+
+                return isProviderGfycat
+
+            }).forEach((item) => {
+                postListData.push(item)
+            })
+
+            if (self.source) {
+                self.setState({
+                    isLoading: false,
+                    postListData: postListData,
+                })
+            }
+
+        }).catch(function (error) {
+            if (self.source && error !== 'MANUALCANCEL') {
+                self.setState({
+                    isLoading: false,
+                    isError: true,
+                })
+            }
+        })
     }
 
-    getCorsData(ajaxData) {
-        return ajaxData.data.children
-    }
 }
 
 export default PostContainer

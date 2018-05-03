@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import Util from './Util'
+
 
 class SettingsContainer extends Component {
     constructor(props) {
@@ -12,28 +14,17 @@ class SettingsContainer extends Component {
         }
 
         this.handleInputChange = this.handleInputChange.bind(this)
-        this.saveSettingsToParent = this.saveSettingsToParent.bind(this)
         this.toggleAdvancedFields = this.toggleAdvancedFields.bind(this)
     }
 
     componentDidMount() {
-        this.updatePropSettingsToState(this.props.currentSettings)
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        const currentSettings = this.props.currentSettings
-        const previousSettings = prevProps.currentSettings
-
-        const isSettingsSame = this.isObjectEqual(currentSettings, previousSettings)
-
-        if (!isSettingsSame) {
-            this.updatePropSettingsToState(currentSettings)
-        }
+        const currentSettings = Util.loadSettings()
+        this.setState(currentSettings)
     }
 
     render() {
         return (
-            <form onSubmit={(e) => this.saveSettingsToParent(e)}>
+            <form onSubmit={(e) => this.saveNewSettings(e)}>
                 <SettingsField fieldType="input" name="subredditUrl"
                     label="Subreddit RSS URL"
                     value={this.state.subredditUrl}
@@ -101,42 +92,11 @@ class SettingsContainer extends Component {
         })
     }
 
-    updatePropSettingsToState(propSettings) {
-        for (var key in propSettings) {
-            this.setState({
-                [key]: propSettings[key]
-            })
-        }
-    }
-
-    saveSettingsToParent(e) {
+    saveNewSettings(e) {
         e.preventDefault()
-        this.props.setSettings(this.state)
+        Util.saveSettings(this.state)
     }
 
-    isObjectEqual(obj1, obj2) {
-        let isEqual = true
-
-        if (Object.keys(obj1).length === Object.keys(obj2).length) {
-            for (var key in obj1) {
-                if (key in obj2) {
-                    isEqual = (obj1[key] === obj2[key])
-                }
-                else {
-                    isEqual = false
-                }
-
-                if (!isEqual) {
-                    break
-                }
-            }
-        }
-        else {
-            isEqual = false
-        }
-
-        return isEqual
-    }
 }
 
 class SettingsField extends Component {
