@@ -67,6 +67,7 @@ class PostContainer extends Component {
         let self = this
         const currentSettings = Util.loadSettings()
 
+        // eslint-disable-next-line
         let fetchUrl = eval(currentSettings.fnUrl)()
         fetchUrl = fetchUrl.replace('{subredditUrl}', currentSettings.subredditUrl)
 
@@ -75,6 +76,7 @@ class PostContainer extends Component {
         axios.get(fetchUrl, {
             cancelToken: self.source.token,
         }).then(function (response) {
+            // eslint-disable-next-line
             const data = eval(currentSettings.fnData)(response.data)
             let postListData = self.state.postListData
 
