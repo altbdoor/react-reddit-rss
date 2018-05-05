@@ -6,7 +6,7 @@
   "homepage": "https://altbdoor.github.io/react-reddit-rss/",
   "dependencies": {
     "axios": "^0.18.0",
-    "bootstrap": "4.1.x",
+    "bootswatch": "4.1.x",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-router-dom": "^4.2.2",

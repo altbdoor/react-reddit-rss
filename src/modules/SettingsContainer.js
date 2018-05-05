@@ -4,6 +4,8 @@ import Util from './Util'
 
 
 class SettingsContainer extends Component {
+    saveTimeout = null
+
     constructor(props) {
         super(props)
         this.state = {
@@ -39,7 +41,7 @@ class SettingsContainer extends Component {
 
                 <div className={this.state.showAdvanced ? '': 'd-none'}>
                     <hr/>
-                    <div className="alert alert-info small">
+                    <div className="alert alert-light small">
                         <p>
                             Here you can configure the two main functions which are used call the API.
                         </p>
@@ -95,6 +97,21 @@ class SettingsContainer extends Component {
     saveNewSettings(e) {
         e.preventDefault()
         Util.saveSettings(this.state)
+
+        const btn = e.target.querySelector('button[type="submit"]')
+        let btnText = btn.getAttribute('data-original-text')
+
+        if (!btnText) {
+            btn.setAttribute('data-original-text', btn.textContent)
+            btnText = btn.textContent
+        }
+
+        btn.textContent = 'Saved!'
+
+        clearTimeout(this.saveTimeout)
+        this.saveTimeout = setTimeout(() => {
+            btn.textContent = btnText
+        }, 1000)
     }
 
 }

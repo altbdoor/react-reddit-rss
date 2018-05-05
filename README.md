@@ -7,7 +7,10 @@ Work in progress. Gfycat browser for Reddit JSON RSS feed.
 
 Built with:
 - [React 16.3.2](https://reactjs.org/)
+- [React Router 4.2.2](https://reacttraining.com/react-router/)
 - [Bootstrap 4.1.1](https://getbootstrap.com/)
+- [Bootswatch Cyborg](https://bootswatch.com/)
+- [axios 0.18.0](https://github.com/axios/axios)
 - [cors-anywhere](https://cors-anywhere.herokuapp.com/)
 
 

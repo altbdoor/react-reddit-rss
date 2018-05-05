@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 
 import React, { Component } from 'react'
 import PostList from './PostList'
@@ -16,7 +16,7 @@ class PostContainer extends Component {
             isError: false,
             postListData: [],
             isShowPlayerFrame: false,
-            gfyId: null,
+            gfyData: null,
         }
 
         this.showPlayerFrame = this.showPlayerFrame.bind(this)
@@ -42,24 +42,24 @@ class PostContainer extends Component {
 
                 <PlayerFrame isShow={this.state.isShowPlayerFrame}
                     hidePlayerFrame={this.hidePlayerFrame}
-                    gfyId={this.state.gfyId} />
+                    gfyData={this.state.gfyData} />
             </div>
         )
     }
 
     // =====
 
-    showPlayerFrame(gfyId) {
+    showPlayerFrame(gfyData) {
         this.setState({
             isShowPlayerFrame: true,
-            gfyId: gfyId,
+            gfyData: gfyData,
         })
     }
 
     hidePlayerFrame() {
         this.setState({
             isShowPlayerFrame: false,
-            gfyId: null,
+            gfyData: null,
         })
     }
 
@@ -69,7 +69,8 @@ class PostContainer extends Component {
 
         // eslint-disable-next-line
         let fetchUrl = eval(currentSettings.fnUrl)()
-        fetchUrl = fetchUrl.replace('{subredditUrl}', currentSettings.subredditUrl)
+        const subredditUrl = currentSettings.subredditUrl
+        fetchUrl = fetchUrl.replace('{subredditUrl}', subredditUrl)
 
         self.source = axios.CancelToken.source()
 

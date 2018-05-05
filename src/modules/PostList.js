@@ -12,13 +12,20 @@ class PostList extends Component {
 
         if (isLoading) {
             postListContent = (
-                <PostItemBasic textContent="Loading content..." />
+                <PostItemBasic content={(
+                    <div className="py-3">
+                        <div className="pb-3">Loading content...</div>
+                        <div className="progress">
+                            <div className="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
+                        </div>
+                    </div>
+                )} />
             )
         }
         else {
             if (isError) {
                 postListContent = (
-                    <PostItemBasic textContent="Error loading content!" />
+                    <PostItemBasic content="Error loading content!" />
                 )
             }
             else {

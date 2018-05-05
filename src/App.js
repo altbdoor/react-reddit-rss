@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
     HashRouter,
     Route,
     NavLink,
 } from 'react-router-dom'
 
-import PostContainer from './modules/PostContainer';
-import SettingsContainer from './modules/SettingsContainer';
+import PostContainer from './modules/PostContainer'
+import SettingsContainer from './modules/SettingsContainer'
 
 
 class App extends Component {
@@ -23,7 +23,7 @@ class App extends Component {
             <HashRouter>
                 <div className="container py-3">
                     <div className="row justify-content-center">
-                        <div className="col-md-9 col-lg-6">
+                        <div className="col-md-9 col-lg-7 col-xl-6">
                             <ul className="nav nav-pills mb-3">
                                 <li className="nav-item">
                                     <NavLink className="nav-link" exact to="/">
@@ -47,4 +47,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default App
