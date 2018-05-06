@@ -22,8 +22,7 @@ class PostItem extends Component {
 
     render() {
         const data = this.props.data
-        const gfyId = data.url.replace(/https?:\/\/gfycat\.com\//, '')
-            .replace('gifs/detail/', '')
+        const gfyId = data.url.split('/').pop()
 
         const bgImg = {
             backgroundImage: `url('${data.thumbnail}')`,
