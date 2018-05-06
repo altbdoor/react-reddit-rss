@@ -24,7 +24,7 @@ class Util {
     // }
 
     static getStorageSettingsKey() {
-        return 'v1-settings'
+        return 'v2-settings'
     }
 
     static getStorageValidKeys() {
@@ -47,7 +47,7 @@ class Util {
 
             fnData: [
                 '(function getAjaxData(ajaxData) {',
-                '    return ajaxData.data.children',
+                '    return ajaxData.data',
                 '})',
             ].join('\n'),
 

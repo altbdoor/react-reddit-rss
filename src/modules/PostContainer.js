@@ -1,6 +1,7 @@
-import axios from 'axios'
-
 import React, { Component } from 'react'
+import axios from 'axios'
+import InfiniteScroll from 'react-infinite-scroller';
+
 import PostList from './PostList'
 import PlayerFrame from './PlayerFrame'
 import Util from './Util'
@@ -12,15 +13,18 @@ class PostContainer extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoading: true,
+            isLoading: false,
             isError: false,
             postListData: [],
             isShowPlayerFrame: false,
             gfyData: null,
+            hasMoreItems: true,
+            nextId: '',
         }
 
         this.showPlayerFrame = this.showPlayerFrame.bind(this)
         this.hidePlayerFrame = this.hidePlayerFrame.bind(this)
+        this.loadPostList = this.loadPostList.bind(this)
     }
 
     componentDidMount() {
@@ -33,12 +37,33 @@ class PostContainer extends Component {
     }
 
     render() {
+        const loader = (
+            <div key="infinite-scroll-loading" className="progress mt-3">
+                <div className="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
+            </div>
+        )
+
+        let error = null
+
+        if (this.state.isError) {
+            error = (
+                <div className="text-center">
+                    Error loading content! Please check if the URL is correct.
+                </div>
+            )
+        }
+
         return (
             <div>
-                <PostList isLoading={this.state.isLoading}
-                    isError={this.state.isError}
-                    data={this.state.postListData}
-                    showPlayerFrame={this.showPlayerFrame} />
+                <InfiniteScroll loadMore={this.loadPostList}
+                    hasMore={this.state.hasMoreItems}
+                    threshold={50}
+                    loader={loader}>
+                    <PostList data={this.state.postListData}
+                        showPlayerFrame={this.showPlayerFrame} />
+                </InfiniteScroll>
+
+                {error}
 
                 <PlayerFrame isShow={this.state.isShowPlayerFrame}
                     hidePlayerFrame={this.hidePlayerFrame}
@@ -65,51 +90,78 @@ class PostContainer extends Component {
 
     loadPostList() {
         let self = this
-        const currentSettings = Util.loadSettings()
 
-        // eslint-disable-next-line
-        let fetchUrl = eval(currentSettings.fnUrl)()
-        const subredditUrl = currentSettings.subredditUrl
-        fetchUrl = fetchUrl.replace('{subredditUrl}', subredditUrl)
+        if (!self.state.isLoading) {
+            self.state.isLoading = true
 
-        self.source = axios.CancelToken.source()
+            const currentSettings = Util.loadSettings()
 
-        axios.get(fetchUrl, {
-            cancelToken: self.source.token,
-        }).then(function (response) {
             // eslint-disable-next-line
-            const data = eval(currentSettings.fnData)(response.data)
-            let postListData = self.state.postListData
+            let fetchUrl = eval(currentSettings.fnUrl)()
+            const subredditUrl = currentSettings.subredditUrl
+            fetchUrl = fetchUrl.replace('{subredditUrl}', subredditUrl)
 
-            data.filter((item) => {
-                let isProviderGfycat = false
+            self.source = axios.CancelToken.source()
+            let fetchConfig = {
+                cancelToken: self.source.token,
+            }
 
-                try {
-                    isProviderGfycat = (item.data.secure_media.oembed.provider_name === 'gfycat')
+            if (this.state.nextId) {
+                fetchConfig['params'] = {
+                    after: this.state.nextId,
                 }
-                catch(e) {}
+            }
 
-                return isProviderGfycat
+            axios.get(fetchUrl, fetchConfig).then(function (response) {
+                // eslint-disable-next-line
+                const data = eval(currentSettings.fnData)(response.data)
+                let postListData = self.state.postListData.slice()
 
-            }).forEach((item) => {
-                postListData.push(item)
+                data.children.filter((item) => {
+                    let isProviderGfycat = false
+
+                    try {
+                        isProviderGfycat = (item.data.secure_media.oembed.provider_name === 'gfycat')
+                    }
+                    catch(e) {}
+
+                    return isProviderGfycat
+
+                }).forEach((item) => {
+                    postListData.push(item)
+                })
+
+                if (self.source) {
+                    self.setState({
+                        isLoading: false,
+                        postListData: postListData,
+                    })
+
+                    if (data.after) {
+                        self.setState({
+                            hasMoreItems: true,
+                            nextId: data.after,
+                        })
+                    }
+                    else {
+                        self.setState({
+                            hasMoreItems: false,
+                            nextId: '',
+                        })
+                    }
+                }
+
+            }).catch(function (error) {
+                if (self.source && error !== 'MANUALCANCEL') {
+                    self.setState({
+                        isLoading: false,
+                        isError: true,
+                        hasMoreItems: false,
+                        nextId: '',
+                    })
+                }
             })
-
-            if (self.source) {
-                self.setState({
-                    isLoading: false,
-                    postListData: postListData,
-                })
-            }
-
-        }).catch(function (error) {
-            if (self.source && error !== 'MANUALCANCEL') {
-                self.setState({
-                    isLoading: false,
-                    isError: true,
-                })
-            }
-        })
+        }
     }
 
 }

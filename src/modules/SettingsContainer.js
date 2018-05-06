@@ -47,11 +47,11 @@ class SettingsContainer extends Component {
                         </p>
 
                         <p>
-                            The first is <b>Function to obtain the RSS URL</b>, which is the function to obtain the URL. By default, the code uses <a className="alert-link" href="https://cors-anywhere.herokuapp.com/">cors-anywhere</a> by <a className="alert-link" href="https://robwu.nl/">Rob Wu</a>. If you want to, you can change it to use a CORS Proxy of your choice. Make sure the <code>{'{subredditUrl}'}</code> is a part of the returned string, as it will be replaced by the URL in <b>Subreddit RSS URL</b>.
+                            The first is <b>Function to obtain the URL</b>, which is the function to obtain the URL. By default, the code uses <a className="alert-link" href="https://cors-anywhere.herokuapp.com/">cors-anywhere</a> by <a className="alert-link" href="https://robwu.nl/">Rob Wu</a> as the CORS proxy. If you want to, you can change it to use a CORS Proxy of your choice. Make sure the <code>{'{subredditUrl}'}</code> is a part of the returned string, as it will be replaced by the URL in <b>Subreddit RSS URL</b>.
                         </p>
 
                         <p>
-                            The second is <b>Function to obtain the data from AJAX call</b>. Assuming the CORS Proxy does not tamper with the data structure, you should not need to change this. But if it does, you need to change the function to return the <code>children</code> key.
+                            The second is <b>Function to obtain the data from AJAX call</b>. Assuming the CORS Proxy does not tamper with the data structure, you should not need to change this. But if it does, you need to change the function to return the object at the level where it has both the <code>children</code> and <code>after</code> key.
                         </p>
 
                         <p className="mb-0">
