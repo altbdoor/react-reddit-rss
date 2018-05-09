@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import he from 'he'
 
 import Util from './Util'
 
@@ -34,6 +35,7 @@ class PostItem extends Component {
             height: data.secure_media.oembed.height,
             width: data.secure_media.oembed.width,
         }
+        const decodedTitle = he.decode(data.title)
 
         return (
             <div className="list-group-item d-flex flex-row" onClick={(e) => this.itemClickHandler(e, gfyData)}>
@@ -41,7 +43,7 @@ class PostItem extends Component {
 
                 <div className="d-flex flex-column">
                     <div className="post-item-title d-flex small font-weight-bold mb-1" title={data.title}>
-                        {data.title}
+                        {decodedTitle}
                     </div>
                     <div className="d-flex mt-auto not-player">
                         <a target="_blank" className="badge badge-reddit mr-1" href={redditLink}>Reddit</a>

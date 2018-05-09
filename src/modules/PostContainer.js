@@ -9,6 +9,7 @@ import Util from './Util'
 
 class PostContainer extends Component {
     source = null
+    postIdList = []
 
     constructor(props) {
         super(props)
@@ -57,7 +58,7 @@ class PostContainer extends Component {
             <div>
                 <InfiniteScroll loadMore={this.loadPostList}
                     hasMore={this.state.hasMoreItems}
-                    threshold={50}
+                    threshold={150}
                     loader={loader}>
                     <PostList data={this.state.postListData}
                         showPlayerFrame={this.showPlayerFrame} />
@@ -117,7 +118,7 @@ class PostContainer extends Component {
                 const data = eval(currentSettings.fnData)(response.data)
                 let postListData = self.state.postListData.slice()
 
-                data.children.filter((item) => {
+                const filteredData = data.children.filter((item) => {
                     let isProviderGfycat = false
 
                     try {
@@ -125,11 +126,17 @@ class PostContainer extends Component {
                     }
                     catch(e) {}
 
-                    return isProviderGfycat
+                    const itemId = `${item.data.subreddit_id}_${item.data.id}`
+                    const isItemIdValid = (!self.postIdList.includes(itemId))
 
-                }).forEach((item) => {
-                    postListData.push(item)
+                    if (isItemIdValid) {
+                        self.postIdList.push(itemId)
+                    }
+
+                    return (isProviderGfycat && isItemIdValid)
                 })
+
+                postListData = postListData.concat(filteredData)
 
                 if (self.source) {
                     self.setState({
