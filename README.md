@@ -13,9 +13,10 @@ Built with:
 - [React 16.3.2](https://reactjs.org/)
 - [React Router 4.2.2](https://reacttraining.com/react-router/)
 - [Bootstrap 4.1.1](https://getbootstrap.com/)
-- [Bootswatch Cyborg](https://bootswatch.com/)
+    - [Bootswatch Cyborg](https://bootswatch.com/)
 - [axios 0.18.0](https://github.com/axios/axios)
-- [React Infinite Scroller](https://cassetterocks.github.io/react-infinite-scroller/)
+- [React Infinite Scroller 1.1.4](https://cassetterocks.github.io/react-infinite-scroller/)
+- [he 1.1.1](https://github.com/mathiasbynens/he)
 - [cors-anywhere](https://cors-anywhere.herokuapp.com/)
 
 
