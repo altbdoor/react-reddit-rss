@@ -48,7 +48,7 @@ class PostContainer extends Component {
 
         if (this.state.isError) {
             error = (
-                <div className="text-center">
+                <div className="text-center mt-3">
                     Error loading content! Please check if the URL is correct.
                 </div>
             )
@@ -92,7 +92,7 @@ class PostContainer extends Component {
     loadPostList() {
         let self = this
 
-        if (!self.state.isLoading) {
+        if (!self.state.isLoading && self.state.hasMoreItems) {
             self.state.isLoading = true
 
             const currentSettings = Util.loadSettings()
@@ -144,7 +144,7 @@ class PostContainer extends Component {
                         postListData: postListData,
                     })
 
-                    if (data.after) {
+                    if (data.after !== null) {
                         self.setState({
                             hasMoreItems: true,
                             nextId: data.after,
