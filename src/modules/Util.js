@@ -37,8 +37,8 @@ class Util {
         return validKeys
     }
 
-    static loadSettings() {
-        let currentSettings = {
+    static getDefaultSettings() {
+        const defaultSettings = {
             fnUrl: [
                 '(function getCorsUrl() {',
                 '    return "https://cors-anywhere.herokuapp.com/{subredditUrl}"',
@@ -54,6 +54,11 @@ class Util {
             subredditUrl: 'https://www.reddit.com/r/RocketLeague/hot/.json',
         }
 
+        return defaultSettings
+    }
+
+    static loadSettings() {
+        let currentSettings = this.getDefaultSettings()
         let userSettings = localStorage.getItem(this.getStorageSettingsKey())
 
         try {

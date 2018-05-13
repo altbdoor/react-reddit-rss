@@ -26,7 +26,7 @@ class SettingsContainer extends Component {
 
     render() {
         return (
-            <form onSubmit={(e) => this.saveNewSettings(e)}>
+            <form onSubmit={(e) => this.saveNewSettings(e)} onReset={(e) => this.resetSettings(e)}>
                 <SettingsField fieldType="input" name="subredditUrl"
                     label="Subreddit RSS URL"
                     value={this.state.subredditUrl}
@@ -70,7 +70,11 @@ class SettingsContainer extends Component {
                         onChange={this.handleInputChange} />
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-block mt-3">
+                <button type="reset" className="btn btn-secondary btn-block mt-3">
+                    Reset Settings
+                </button>
+
+                <button type="submit" className="btn btn-primary btn-block mt-2">
                     Save Settings
                 </button>
             </form>
@@ -112,6 +116,17 @@ class SettingsContainer extends Component {
         this.saveTimeout = setTimeout(() => {
             btn.textContent = btnText
         }, 1000)
+    }
+
+    resetSettings(e) {
+        e.preventDefault()
+
+        const defaultSettings = Util.getDefaultSettings()
+        for (let key in defaultSettings) {
+            this.setState({
+                [key]: defaultSettings[key],
+            })
+        }
     }
 
 }
