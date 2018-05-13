@@ -51,7 +51,7 @@ class PlayerFrame extends Component {
 
         if (gfyData) {
             gfyId = gfyData.gfyId
-            iframeSrc = `https://gfycat.com/ifr/${gfyId}`
+            iframeSrc = `https://gfycat.com/ifr/${gfyId}?autoplay=1`
 
             const dimension = this.getModalSize(gfyData.width, gfyData.height)
             width = dimension.width
