@@ -2,6 +2,7 @@
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Faltbdoor%2Freact-reddit-rss.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Faltbdoor%2Freact-reddit-rss?ref=badge_shield)
 [![Build status](https://ci.appveyor.com/api/projects/status/k6q6j6cjfkvrlbm9?svg=true)](https://ci.appveyor.com/project/altbdoor/react-reddit-rss)
+[![Dependency Status](https://david-dm.org/altbdoor/react-reddit-rss/status.svg)](https://david-dm.org/altbdoor/react-reddit-rss)
 
 Gfycat browser for Reddit JSON RSS feed.
 
