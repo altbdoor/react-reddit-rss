@@ -68,7 +68,7 @@ class PlayerFrame extends Component {
 
         return (
             <div className={modalClass} onClick={(e) => this.closeModal(e)}>
-                <div className="modal-dialog" style={modalDimension}>
+                <div className="modal-dialog modal-dialog-centered" style={modalDimension}>
                     <div className="modal-content">
                         <div className="modal-body p-0 position-relative">
                             <button className="gfycat-close position-absolute btn btn-lg btn-danger" type="button"
