@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import he from 'he'
 
-import Util from './Util'
-
-
 class PostItemBasic extends Component {
     render() {
         return (
@@ -23,7 +20,10 @@ class PostItem extends Component {
 
     render() {
         const data = this.props.data
-        const gfyId = data.url.split('/').pop()
+        const thumbnailUrl = data.secure_media.oembed.thumbnail_url
+        const gfyId = thumbnailUrl
+            .replace('https://thumbs.gfycat.com/', '')
+            .replace('-size_restricted.gif', '')
 
         const bgImg = {
             backgroundImage: `url('${data.thumbnail}')`,
@@ -38,16 +38,34 @@ class PostItem extends Component {
         const decodedTitle = he.decode(data.title)
 
         return (
-            <div className="list-group-item d-flex flex-row" onClick={(e) => this.itemClickHandler(e, gfyData)}>
-                <div className="d-flex post-item-img" style={bgImg}></div>
+            <div
+                className="list-group-item d-flex flex-row"
+                onClick={(e) => this.itemClickHandler(e, gfyData)}
+            >
+                <div className="d-flex post-item-img" style={bgImg} />
 
                 <div className="d-flex flex-column">
-                    <div className="post-item-title d-flex small font-weight-bold mb-1" title={data.title}>
+                    <div
+                        className="post-item-title d-flex small font-weight-bold mb-1"
+                        title={data.title}
+                    >
                         {decodedTitle}
                     </div>
                     <div className="d-flex mt-auto not-player">
-                        <a target="_blank" className="badge badge-reddit mr-1" href={redditLink}>Reddit</a>
-                        <a target="_blank" className="badge badge-gfycat" href={gfycatLink}>Gfycat</a>
+                        <a
+                            target="_blank"
+                            className="badge badge-reddit mr-1"
+                            href={redditLink}
+                        >
+                            Reddit
+                        </a>
+                        <a
+                            target="_blank"
+                            className="badge badge-gfycat"
+                            href={gfycatLink}
+                        >
+                            Gfycat
+                        </a>
                     </div>
                 </div>
             </div>
@@ -57,7 +75,7 @@ class PostItem extends Component {
     // =====
 
     itemClickHandler(e, gfyData) {
-        const notPlayer = Util.closest(e.target, '.not-player')
+        const notPlayer = e.target.closest('.not-player')
         if (!notPlayer) {
             e.preventDefault()
             this.props.showPlayerFrame(gfyData)
@@ -65,7 +83,4 @@ class PostItem extends Component {
     }
 }
 
-export {
-    PostItemBasic,
-    PostItem,
-}
+export { PostItemBasic, PostItem }

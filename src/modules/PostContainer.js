@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import InfiniteScroll from 'react-infinite-scroller';
+import InfiniteScroll from 'react-infinite-scroller'
 
+import { loadSettings } from '../helper/settings'
 import PostList from './PostList'
 import PlayerFrame from './PlayerFrame'
-import Util from './Util'
-
 
 class PostContainer extends Component {
     source = null
@@ -40,7 +39,7 @@ class PostContainer extends Component {
     render() {
         const loader = (
             <div key="infinite-scroll-loading" className="progress mt-3">
-                <div className="progress-bar progress-bar-striped progress-bar-animated w-100"></div>
+                <div className="progress-bar progress-bar-striped progress-bar-animated w-100" />
             </div>
         )
 
@@ -56,19 +55,25 @@ class PostContainer extends Component {
 
         return (
             <div>
-                <InfiniteScroll loadMore={this.loadPostList}
+                <InfiniteScroll
+                    loadMore={this.loadPostList}
                     hasMore={this.state.hasMoreItems}
-                    threshold={150}
-                    loader={loader}>
-                    <PostList data={this.state.postListData}
-                        showPlayerFrame={this.showPlayerFrame} />
+                    threshold={200}
+                    loader={loader}
+                >
+                    <PostList
+                        data={this.state.postListData}
+                        showPlayerFrame={this.showPlayerFrame}
+                    />
                 </InfiniteScroll>
 
                 {error}
 
-                <PlayerFrame isShow={this.state.isShowPlayerFrame}
+                <PlayerFrame
+                    isShow={this.state.isShowPlayerFrame}
                     hidePlayerFrame={this.hidePlayerFrame}
-                    gfyData={this.state.gfyData} />
+                    gfyData={this.state.gfyData}
+                />
             </div>
         )
     }
@@ -95,7 +100,7 @@ class PostContainer extends Component {
         if (!self.state.isLoading && self.state.hasMoreItems) {
             self.state.isLoading = true
 
-            const currentSettings = Util.loadSettings()
+            const currentSettings = loadSettings()
 
             // eslint-disable-next-line
             let fetchUrl = eval(currentSettings.fnUrl)()
@@ -113,64 +118,67 @@ class PostContainer extends Component {
                 }
             }
 
-            axios.get(fetchUrl, fetchConfig).then(function (response) {
-                // eslint-disable-next-line
-                const data = eval(currentSettings.fnData)(response.data)
-                let postListData = self.state.postListData.slice()
+            axios
+                .get(fetchUrl, fetchConfig)
+                .then(function(response) {
+                    // eslint-disable-next-line
+                    const data = eval(currentSettings.fnData)(response.data)
+                    let postListData = self.state.postListData.slice()
 
-                const filteredData = data.children.filter((item) => {
-                    let isProviderGfycat = false
+                    const filteredData = data.children.filter((item) => {
+                        let isProviderGfycat = false
 
-                    try {
-                        isProviderGfycat = (item.data.secure_media.oembed.provider_name === 'gfycat')
-                    }
-                    catch(e) {}
+                        try {
+                            isProviderGfycat =
+                                item.data.secure_media.oembed.provider_name ===
+                                'gfycat'
+                        } catch (e) {}
 
-                    const itemId = `${item.data.subreddit_id}_${item.data.id}`
-                    const isItemIdValid = (!self.postIdList.includes(itemId))
+                        const itemId = `${item.data.subreddit_id}_${
+                            item.data.id
+                        }`
+                        const isItemIdValid = !self.postIdList.includes(itemId)
 
-                    if (isItemIdValid) {
-                        self.postIdList.push(itemId)
-                    }
+                        if (isItemIdValid) {
+                            self.postIdList.push(itemId)
+                        }
 
-                    return (isProviderGfycat && isItemIdValid)
-                })
-
-                postListData = postListData.concat(filteredData)
-
-                if (self.source) {
-                    self.setState({
-                        isLoading: false,
-                        postListData: postListData,
+                        return isProviderGfycat && isItemIdValid
                     })
 
-                    if (data.after !== null) {
+                    postListData = postListData.concat(filteredData)
+
+                    if (self.source) {
                         self.setState({
-                            hasMoreItems: true,
-                            nextId: data.after,
+                            isLoading: false,
+                            postListData: postListData,
                         })
+
+                        if (data.after !== null) {
+                            self.setState({
+                                hasMoreItems: true,
+                                nextId: data.after,
+                            })
+                        } else {
+                            self.setState({
+                                hasMoreItems: false,
+                                nextId: '',
+                            })
+                        }
                     }
-                    else {
+                })
+                .catch(function(error) {
+                    if (self.source && error !== 'MANUALCANCEL') {
                         self.setState({
+                            isLoading: false,
+                            isError: true,
                             hasMoreItems: false,
                             nextId: '',
                         })
                     }
-                }
-
-            }).catch(function (error) {
-                if (self.source && error !== 'MANUALCANCEL') {
-                    self.setState({
-                        isLoading: false,
-                        isError: true,
-                        hasMoreItems: false,
-                        nextId: '',
-                    })
-                }
-            })
+                })
         }
     }
-
 }
 
 export default PostContainer

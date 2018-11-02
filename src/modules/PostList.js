@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { PostItem } from './PostItem'
 
-
 class PostList extends Component {
     render() {
         // const isLoading = this.props.isLoading
@@ -46,8 +45,11 @@ class PostList extends Component {
             const itemKey = `${data.subreddit_id}_${data.id}`
 
             return (
-                <PostItem key={itemKey} data={data}
-                    showPlayerFrame={this.props.showPlayerFrame} />
+                <PostItem
+                    key={itemKey}
+                    data={data}
+                    showPlayerFrame={this.props.showPlayerFrame}
+                />
             )
         })
 

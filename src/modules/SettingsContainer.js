@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
-import Util from './Util'
-
+import { defaultSettings, loadSettings, saveSettings } from '../helper/settings'
 
 class SettingsContainer extends Component {
     saveTimeout = null
@@ -20,61 +19,109 @@ class SettingsContainer extends Component {
     }
 
     componentDidMount() {
-        const currentSettings = Util.loadSettings()
+        const currentSettings = loadSettings()
         this.setState(currentSettings)
     }
 
     render() {
         return (
-            <form onSubmit={(e) => this.saveNewSettings(e)} onReset={(e) => this.resetSettings(e)}>
-                <SettingsField fieldType="input" name="subredditUrl"
+            <form
+                onSubmit={(e) => this.saveNewSettings(e)}
+                onReset={(e) => this.resetSettings(e)}
+            >
+                <SettingsField
+                    fieldType="input"
+                    name="subredditUrl"
                     label="Subreddit RSS URL"
                     value={this.state.subredditUrl}
                     helpText="Too complex? Just change 'RocketLeague' to the subreddit of your choice."
-                    onChange={this.handleInputChange} />
+                    onChange={this.handleInputChange}
+                />
 
                 <div className="text-right">
-                    <a href="" className="small" onClick={(e) => this.toggleAdvancedFields(e)}>
+                    <a
+                        href=""
+                        className="small"
+                        onClick={(e) => this.toggleAdvancedFields(e)}
+                    >
                         Show advanced settings
                     </a>
                 </div>
 
-                <div className={this.state.showAdvanced ? '': 'd-none'}>
-                    <hr/>
+                <div className={this.state.showAdvanced ? '' : 'd-none'}>
+                    <hr />
                     <div className="alert alert-light small">
                         <p>
-                            Here you can configure the two main functions which are used call the API.
+                            Here you can configure the two main functions which
+                            are used call the API.
                         </p>
 
                         <p>
-                            The first is <b>Function to obtain the URL</b>, which is the function to obtain the URL. By default, the code uses <a className="alert-link" href="https://cors-anywhere.herokuapp.com/">cors-anywhere</a> by <a className="alert-link" href="https://robwu.nl/">Rob Wu</a> as the CORS proxy. If you want to, you can change it to use a CORS Proxy of your choice. Make sure the <code>{'{subredditUrl}'}</code> is a part of the returned string, as it will be replaced by the URL in <b>Subreddit RSS URL</b>.
+                            The first is <b>Function to obtain the URL</b>,
+                            which is the function to obtain the URL. By default,
+                            the code uses{' '}
+                            <a
+                                className="alert-link"
+                                href="https://cors-anywhere.herokuapp.com/"
+                            >
+                                cors-anywhere
+                            </a>{' '}
+                            by{' '}
+                            <a className="alert-link" href="https://robwu.nl/">
+                                Rob Wu
+                            </a>{' '}
+                            as the CORS proxy. If you want to, you can change it
+                            to use a CORS Proxy of your choice. Make sure the{' '}
+                            <code>{'{subredditUrl}'}</code> is a part of the
+                            returned string, as it will be replaced by the URL
+                            in <b>Subreddit RSS URL</b>.
                         </p>
 
                         <p>
-                            The second is <b>Function to obtain the data from AJAX call</b>. Assuming the CORS Proxy does not tamper with the data structure, you should not need to change this. But if it does, you need to change the function to return the object at the level where it has both the <code>children</code> and <code>after</code> key.
+                            The second is{' '}
+                            <b>Function to obtain the data from AJAX call</b>.
+                            Assuming the CORS Proxy does not tamper with the
+                            data structure, you should not need to change this.
+                            But if it does, you need to change the function to
+                            return the object at the level where it has both the{' '}
+                            <code>children</code> and <code>after</code> key.
                         </p>
 
                         <p className="mb-0">
-                            These two functions will be evaluated directly on the browser. <code>eval</code> is evil, but sorry, I cannot think of a better way.
+                            These two functions will be evaluated directly on
+                            the browser. <code>eval</code> is evil, but sorry, I
+                            cannot think of a better way.
                         </p>
                     </div>
 
-                    <SettingsField fieldType="textarea" name="fnUrl"
+                    <SettingsField
+                        fieldType="textarea"
+                        name="fnUrl"
                         label="Function to obtain the RSS URL"
                         value={this.state.fnUrl}
-                        onChange={this.handleInputChange} />
+                        onChange={this.handleInputChange}
+                    />
 
-                    <SettingsField fieldType="textarea" name="fnData"
+                    <SettingsField
+                        fieldType="textarea"
+                        name="fnData"
                         label="Function to obtain the data from AJAX call"
                         value={this.state.fnData}
-                        onChange={this.handleInputChange} />
+                        onChange={this.handleInputChange}
+                    />
                 </div>
 
-                <button type="reset" className="btn btn-secondary btn-block mt-3">
+                <button
+                    type="reset"
+                    className="btn btn-secondary btn-block mt-3"
+                >
                     Reset Settings
                 </button>
 
-                <button type="submit" className="btn btn-primary btn-block mt-2">
+                <button
+                    type="submit"
+                    className="btn btn-primary btn-block mt-2"
+                >
                     Save Settings
                 </button>
             </form>
@@ -94,13 +141,13 @@ class SettingsContainer extends Component {
         const target = e.target
 
         this.setState({
-            [target.name]: target.value
+            [target.name]: target.value,
         })
     }
 
     saveNewSettings(e) {
         e.preventDefault()
-        Util.saveSettings(this.state)
+        saveSettings(this.state)
 
         const btn = e.target.querySelector('button[type="submit"]')
         let btnText = btn.getAttribute('data-original-text')
@@ -120,15 +167,8 @@ class SettingsContainer extends Component {
 
     resetSettings(e) {
         e.preventDefault()
-
-        const defaultSettings = Util.getDefaultSettings()
-        for (let key in defaultSettings) {
-            this.setState({
-                [key]: defaultSettings[key],
-            })
-        }
+        this.setState({ ...defaultSettings })
     }
-
 }
 
 class SettingsField extends Component {
@@ -137,16 +177,23 @@ class SettingsField extends Component {
 
         if (this.props.fieldType === 'textarea') {
             fieldComponent = (
-                <textarea rows="3" name={this.props.name} className="form-control"
+                <textarea
+                    rows="3"
+                    name={this.props.name}
+                    className="form-control"
                     value={this.props.value}
-                    onChange={(e) => this.props.onChange(e)}></textarea>
+                    onChange={(e) => this.props.onChange(e)}
+                />
             )
-        }
-        else {
+        } else {
             fieldComponent = (
-                <input type="text" name={this.props.name} className="form-control"
+                <input
+                    type="text"
+                    name={this.props.name}
+                    className="form-control"
                     value={this.props.value}
-                    onChange={(e) => this.props.onChange(e)} />
+                    onChange={(e) => this.props.onChange(e)}
+                />
             )
         }
 
@@ -154,11 +201,12 @@ class SettingsField extends Component {
             <div className="form-group">
                 <label>{this.props.label}</label>
                 {fieldComponent}
-                <small className="form-text text-muted">{this.props.helpText}</small>
+                <small className="form-text text-muted">
+                    {this.props.helpText}
+                </small>
             </div>
         )
     }
-
 }
 
 export default SettingsContainer
