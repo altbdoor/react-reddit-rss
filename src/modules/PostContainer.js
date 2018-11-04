@@ -123,7 +123,7 @@ class PostContainer extends Component {
                 .then(function(response) {
                     // eslint-disable-next-line
                     const data = eval(currentSettings.fnData)(response.data)
-                    let postListData = self.state.postListData.slice()
+                    let postListData = [...self.state.postListData]
 
                     const filteredData = data.children.filter((item) => {
                         let isProviderGfycat = false

@@ -18,6 +18,10 @@ class PlayerFrame extends Component {
         })
     }
 
+    componentWillUnmount() {
+        this.state.backdrop.remove()
+    }
+
     componentDidUpdate(prevProps, prevState) {
         let backdropElem = this.state.backdrop
         if (this.props.isShow === true) {
@@ -55,10 +59,12 @@ class PlayerFrame extends Component {
 
             videoElem = (
                 <video
-                    class="d-block"
+                    className="d-block"
                     poster={`https://thumbs.gfycat.com/${gfyId}-mobile.jpg`}
                     preload="auto"
                     controls
+                    loop
+                    muted
                     autoPlay
                     style={modalDimension}
                 >
@@ -76,7 +82,7 @@ class PlayerFrame extends Component {
                     className="modal-dialog modal-dialog-centered"
                     style={modalDimension}
                 >
-                    <div className="modal-content">
+                    <div className="modal-content border-0">
                         <div className="modal-body p-0 position-relative">
                             <button
                                 className="gfycat-close position-absolute btn btn-lg btn-danger"
@@ -128,15 +134,15 @@ class PlayerFrame extends Component {
     }
 
     getModalSize(originalWidth, originalHeight) {
-        const windowWidth = window.innerWidth
-        const windowHeight = window.innerHeight
         const modalGap = 20
+        const windowWidth = window.innerWidth - modalGap
+        const windowHeight = window.innerHeight - modalGap
 
-        let maxWidth = Math.min(windowWidth, 800) - modalGap
+        let maxWidth = Math.min(windowWidth, 800)
         let maxHeight = maxWidth * (originalHeight / originalWidth)
 
         if (maxHeight > windowHeight) {
-            maxHeight = Math.min(windowHeight, originalHeight) - modalGap
+            maxHeight = Math.min(windowHeight, originalHeight)
             maxWidth = maxHeight * (originalWidth / originalHeight)
         }
 

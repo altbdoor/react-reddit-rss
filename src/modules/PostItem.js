@@ -1,16 +1,6 @@
 import React, { Component } from 'react'
 import he from 'he'
 
-class PostItemBasic extends Component {
-    render() {
-        return (
-            <div className="list-group-item text-center">
-                {this.props.content}
-            </div>
-        )
-    }
-}
-
 class PostItem extends Component {
     constructor(props) {
         super(props)
@@ -54,6 +44,7 @@ class PostItem extends Component {
                     <div className="d-flex mt-auto not-player">
                         <a
                             target="_blank"
+                            rel="noreferrer"
                             className="badge badge-reddit mr-1"
                             href={redditLink}
                         >
@@ -61,6 +52,7 @@ class PostItem extends Component {
                         </a>
                         <a
                             target="_blank"
+                            rel="noreferrer"
                             className="badge badge-gfycat"
                             href={gfycatLink}
                         >
@@ -83,4 +75,4 @@ class PostItem extends Component {
     }
 }
 
-export { PostItemBasic, PostItem }
+export default PostItem

@@ -27,16 +27,11 @@ textarea {
     overflow: hidden;
 }
 
-.gfycat-embed > iframe {
-    top: 0;
-    left: 0;
-}
-
 .gfycat-close {
     z-index: 1500;
     top: 0;
     right: 0;
-    border-radius: 0 0 0 4px;
+    border-radius: 0;
     font-family: monospace;
     line-height: 1;
     border: 0;
@@ -71,8 +66,4 @@ textarea {
 .modal-dialog {
     margin: 10px auto;
     max-width: none;
-}
-
-.modal-content {
-    border: 0;
 }
