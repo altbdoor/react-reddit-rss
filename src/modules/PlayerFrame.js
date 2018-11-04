@@ -65,6 +65,7 @@ class PlayerFrame extends Component {
                     controls
                     loop
                     muted
+                    playsInline
                     autoPlay
                     style={modalDimension}
                 >
