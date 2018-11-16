@@ -130,7 +130,7 @@ class PostContainer extends Component {
 
                         try {
                             isProviderGfycat =
-                                item.data.secure_media.oembed.provider_name ===
+                                item.data.secure_media.oembed.provider_name.toLowerCase() ===
                                 'gfycat'
                         } catch (e) {}
 

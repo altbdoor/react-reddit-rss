@@ -11,9 +11,7 @@ class PostItem extends Component {
     render() {
         const data = this.props.data
         const thumbnailUrl = data.secure_media.oembed.thumbnail_url
-        const gfyId = thumbnailUrl
-            .replace('https://thumbs.gfycat.com/', '')
-            .replace('-size_restricted.gif', '')
+        const gfyId = thumbnailUrl.replace(/(.+?thumbs\.gfycat\.com(%2F|\/)|-size_restricted.+)/g, '')
 
         const bgImg = {
             backgroundImage: `url('${data.thumbnail}')`,
