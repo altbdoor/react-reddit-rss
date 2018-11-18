@@ -21,6 +21,7 @@ Built with:
 - [he 1.2.0](https://github.com/mathiasbynens/he)
 - [cors-anywhere](https://cors-anywhere.herokuapp.com/)
 
+App icon courtesy of [FontAwesome 4.7.0](https://fontawesome.com/v4.7.0/).
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Faltbdoor%2Freact-reddit-rss.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Faltbdoor%2Freact-reddit-rss?ref=badge_large)
