@@ -5,7 +5,7 @@ const validStorageKeys = ['fnUrl', 'fnData', 'subredditUrl']
 export const defaultSettings = {
     fnUrl: [
         '(function getCorsUrl() {',
-        '    return "https://cors-anywhere.herokuapp.com/{subredditUrl}"',
+        '    return "https://yacdn.org/proxy/{subredditUrl}"',
         '})',
     ].join('\n'),
 
