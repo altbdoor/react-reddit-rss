@@ -62,13 +62,9 @@ class SettingsContainer extends Component {
                             the code uses{' '}
                             <a
                                 className="alert-link"
-                                href="https://cors-anywhere.herokuapp.com/"
+                                href="https://github.com/ovsoinc/yacdn.org"
                             >
-                                cors-anywhere
-                            </a>{' '}
-                            by{' '}
-                            <a className="alert-link" href="https://robwu.nl/">
-                                Rob Wu
+                                yacdn
                             </a>{' '}
                             as the CORS proxy. If you want to, you can change it
                             to use a CORS Proxy of your choice. Make sure the{' '}
